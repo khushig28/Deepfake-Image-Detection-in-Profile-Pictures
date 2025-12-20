@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Dataset (too large for GitHub)
+data/
+dataset/
+
+# Training outputs (optional - keep metrics if you want)
+outputs/logs/
+outputs/evaluation/
+
+# Temporary files
+uploads/
+*.tmp
+*.log
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Model checkpoints (GitHub has 100MB file limit)
+# Keep best_model.pth but use Git LFS or host elsewhere
+# outputs/checkpoints/*.pth
+
+# Environment variables
+.env
+.env.local
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb

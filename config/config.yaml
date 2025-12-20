@@ -1,0 +1,110 @@
+# Deepfake Detection Configuration File
+
+# Project Information
+project:
+  name: "Deepfake Image Detection"
+  description: "AI-based deepfake detection for profile pictures"
+  version: "1.0.0"
+
+# Data Configuration
+data:
+  dataset_path: "data"  # Relative to project root
+  train_dir: "Train"
+  val_dir: "Validation"
+  test_dir: "Test"
+  
+  # Class names (folders must match these names)
+  classes:
+    - "Fake"
+    - "Real"
+  
+  # Data split percentages (if you need to create splits)
+  split_ratios:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+
+# Image Preprocessing
+image:
+  size: 160  # Optimized for 4GB GPU (larger than CPU, smaller than full 224)
+  normalize_mean: [0.485, 0.456, 0.406]  # ImageNet normalization
+  normalize_std: [0.229, 0.224, 0.225]
+
+# Data Augmentation (Training only)
+augmentation:
+  random_horizontal_flip: true
+  random_rotation_degrees: 15
+  color_jitter:
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.1
+  random_affine:
+    degrees: 0
+    translate: [0.1, 0.1]
+
+# Model Configuration
+model:
+  architecture: "efficientnet_b0"  # Options: efficientnet_b0, resnet50, mobilenet_v2
+  pretrained: true
+  num_classes: 2  # Binary classification (Real/Fake)
+  dropout: 0.3  # Dropout rate for regularization
+  freeze_backbone: false  # Set to true to freeze pretrained layers initially
+
+# Training Configuration
+training:
+  epochs: 30
+  batch_size: 48  # Optimized for 4GB GPU
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  
+  # Optimizer
+  optimizer: "adam"  # Options: adam, sgd, adamw
+  
+  # Learning rate scheduler
+  scheduler:
+    type: "reduce_on_plateau"  # Options: reduce_on_plateau, step, cosine
+    patience: 3
+    factor: 0.5
+    min_lr: 0.000001
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 7
+    min_delta: 0.001  # Minimum improvement to consider
+
+# Hardware Optimization
+hardware:
+  device: "cuda"  # CUDA enabled!
+  num_workers: 4  # Optimal for GPU
+  pin_memory: true  # True for GPU
+  prefetch_factor: 2
+
+# Checkpointing
+checkpoint:
+  save_dir: "outputs/checkpoints"
+  save_best: true  # Save best model based on validation accuracy
+  save_last: true  # Save last epoch model
+  save_frequency: 5  # Save checkpoint every N epochs
+
+# Logging and Monitoring
+logging:
+  log_dir: "outputs/logs"
+  metrics_dir: "outputs/metrics"
+  save_metrics_csv: true
+  save_plots: true
+  verbose: true  # Print detailed epoch metrics
+  
+  # Metrics to track
+  track_metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "confusion_matrix"
+    - "roc_auc"
+    - "loss"
+
+# Random seed for reproducibility
+seed: 42
